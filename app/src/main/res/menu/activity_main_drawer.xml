@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/menu_home" />
+        <item
+            android:id="@+id/nav_tvChannel"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/menu_tv_channel" />
+        <item
+            android:id="@+id/nav_movieTrailers"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/menu_Movie_trailers" />
+        <item
+            android:id="@+id/nav_movies"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="@string/menu_Movies" />
+
+        <item
+            android:id="@+id/nav_drama"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="@string/menu_drama" />
+
+        <item
+            android:id="@+id/nav_MP3"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="@string/menu_MP3" />
+
+        <item
+            android:id="@+id/nav_radioStation"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="@string/menu_radio" />
+
+        <item
+            android:id="@+id/nav_newsPaper"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="@string/menu_newspaper" />
+
+        <item
+            android:id="@+id/nav_sports"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="@string/menu_sports" />
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+
+            <item
+                android:id="@+id/nav_privacy"
+                android:icon="@drawable/ic_menu_send"
+                android:title="@string/menu_policy" />
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="@string/menu_share" />
+
+            <item
+                android:id="@+id/nav_RateUs"
+                android:icon="@drawable/ic_menu_share"
+                android:title="@string/menu_rateUs" />
+            <item
+                android:id="@+id/nav_exits"
+                android:icon="@drawable/ic_menu_send"
+                android:title="@string/menu_exits" />
+        </menu>
+    </item>
+
+</menu>

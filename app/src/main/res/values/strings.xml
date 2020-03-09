@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Modern Media</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Md. Somon Hossain</string>
+    <string name="nav_header_subtitle">somon12230327@gmail.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="action_AdminPanel">Admin Panel</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_tv_channel">TV Channel</string>
+    <string name="menu_Movie_trailers">Latest Movie Trailers</string>
+    <string name="menu_Movies">Popular Movies</string>
+
+    <string name="menu_drama">Popular Drama</string>
+    <string name="menu_MP3">Popular MP3 Songs</string>
+    <string name="menu_radio">BD Radio Station</string>
+    <string name="menu_newspaper">All NewsPaper</string>
+    <string name="menu_sports">Sports Update</string>
+
+    <string name="menu_policy">Privacy Policy</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_rateUs">Rate Us</string>
+    <string name="menu_exits">Exits</string>
+</resources>
