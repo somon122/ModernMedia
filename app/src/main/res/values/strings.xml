@@ -24,4 +24,15 @@
     <string name="menu_share">Share</string>
     <string name="menu_rateUs">Rate Us</string>
     <string name="menu_exits">Exits</string>
+
+
+    // API links
+
+    <string name="localhost_links">http://192.168.0.103:80/Modern_media/read_yt.php</string>
+    <string name="main_host_read_links">https://somonapp.000webhostapp.com/modern_media/read_yt.php</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
 </resources>

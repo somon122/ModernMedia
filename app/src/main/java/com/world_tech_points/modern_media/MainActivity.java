@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
+import com.world_tech_points.modern_media.ShowAllData.ShowActivity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
          tabLayout = findViewById(R.id.tabLayout_id);
 
         tabLayout.addTab(tabLayout.newTab().setText("Home"));
-        tabLayout.addTab(tabLayout.newTab().setText("TV Channel"));
+        tabLayout.addTab(tabLayout.newTab().setText("TV"));
         tabLayout.addTab(tabLayout.newTab().setText("Movies"));
         tabLayout.addTab(tabLayout.newTab().setText("Trailers"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -86,31 +87,25 @@ public class MainActivity extends AppCompatActivity {
                     finish();
 
                 }else if (id == R.id.nav_tvChannel){
-                    Toast.makeText(MainActivity.this, "nav_tvChannel", Toast.LENGTH_SHORT).show();
+                   categorySent("Tv_channel");
 
                 }else if (id == R.id.nav_movies){
-                    Toast.makeText(MainActivity.this, "nav_movies", Toast.LENGTH_SHORT).show();
-
+                    categorySent("Latest_movie");
                 }else if (id == R.id.nav_radioStation){
-                    Toast.makeText(MainActivity.this, "nav_radioStation", Toast.LENGTH_SHORT).show();
-
+                    categorySent("Radio_station");
                 }else if (id == R.id.nav_movieTrailers){
-                    Toast.makeText(MainActivity.this, "nav_movieTrailers", Toast.LENGTH_SHORT).show();
-
+                    categorySent("Movie_trailers");
                 }else if (id == R.id.nav_sports){
-                    Toast.makeText(MainActivity.this, "nav_sports", Toast.LENGTH_SHORT).show();
-
+                    categorySent("Sports_update");
                 }else if (id == R.id.nav_drama){
-                    Toast.makeText(MainActivity.this, "nav_drama", Toast.LENGTH_SHORT).show();
-
+                    categorySent("Drama");
                 }else if (id == R.id.nav_MP3){
-                    Toast.makeText(MainActivity.this, "nav_MP3", Toast.LENGTH_SHORT).show();
-
+                    categorySent("Mp3_music");
                 }else if (id == R.id.nav_newsPaper){
-                    Toast.makeText(MainActivity.this, "nav_newsPaper", Toast.LENGTH_SHORT).show();
-
+                    categorySent("Newspaper");
+                }else if (id == R.id.nav_worldTechnology){
+                    categorySent("World_technology");
                 }
-
 
 
                 else if (id == R.id.nav_privacy){
@@ -143,6 +138,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void categorySent(String value){
+
+        Intent intent = new Intent(MainActivity.this, ShowActivity.class);
+        intent.putExtra("category",value);
+        startActivity(intent);
+
+
+    }
+
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
@@ -156,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Setting coming Soon..", Toast.LENGTH_SHORT).show();
 
         }else if (id==R.id.action_Admin){
-            Toast.makeText(this, "Admin Panel coming Soon..", Toast.LENGTH_SHORT).show();
+           startActivity(new Intent(MainActivity.this,SubmitActivity.class));
         }
 
 
@@ -168,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
             builder.setTitle("Exits Alert!")
-                    .setMessage("Are you sure to Exits!")
+                    .setMessage("Are you sure to exits!")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

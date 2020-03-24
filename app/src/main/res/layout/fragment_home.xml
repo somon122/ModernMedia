@@ -1,20 +1,437 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#ffffff"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
-    <Button
-        android:id="@+id/testButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="148dp"
-        android:text="Sent Link"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ViewFlipper
+        android:id="@+id/viewFlipper_id"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/dramaCategory"
+            android:text="Latest Drama"
+            android:textColor="#FD045A"
+            android:paddingStart="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/viewFlipper_id"
+            />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mainDramaRecyclerView_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dramaCategory" />
+
+
+        <LinearLayout
+            android:id="@+id/dramaView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mainDramaRecyclerView_id" >
+
+
+            <TextView
+                android:id="@+id/mp3Category_id"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="#ffffff"
+                android:textColor="#029110"
+                android:text="Latest MP3 Music"
+                android:paddingStart="5dp"
+                />
+
+
+            <TextView
+                android:id="@+id/dramaAllView_id"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="#ffffff"
+                android:gravity="end"
+                android:text="View all"
+                android:textStyle="italic"
+                android:textSize="12sp"
+                android:textColor="#000000"
+                android:paddingEnd="5dp"/>
+
+        </LinearLayout>
+
+
+
+
+
+   <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/mainMP3RecyclerView_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dramaView"
+       />
+
+
+        <LinearLayout
+            android:id="@+id/trailersCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mainMP3RecyclerView_id"
+            >
+
+            <TextView
+                android:id="@+id/trailersCategoryView_id"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="#ffffff"
+                android:paddingStart="5dp"
+                android:text="Movie Trailers"
+                android:textAllCaps="false"
+                android:textColor="#E90553"
+                />
+
+
+            <TextView
+                android:id="@+id/mp3AllView_id"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="#ffffff"
+                android:paddingEnd="5dp"
+                android:gravity="end"
+                android:text="View all"
+                android:textAllCaps="false"
+                android:textColor="#000000"
+                android:textSize="12sp"
+                android:textStyle="italic"
+                />
+
+
+
+
+        </LinearLayout>
+
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/trailersRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/trailersCategory"
+           >
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+
+
+        <LinearLayout
+            android:id="@+id/allCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/trailersRecyclerView"
+            >
+
+            <TextView
+                android:id="@+id/allCategoryView_id"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="#ffffff"
+                android:paddingStart="5dp"
+                android:text="All Category"
+                android:textAllCaps="false"
+                android:textColor="#0CFC04"
+                />
+
+
+            <TextView
+                android:id="@+id/trailersAllView_id"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="#ffffff"
+                android:paddingEnd="5dp"
+                android:gravity="end"
+                android:text="View all"
+                android:textAllCaps="false"
+                android:textColor="#000000"
+                android:textSize="12sp"
+                android:textStyle="italic"
+               />
+
+
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/allCategory">
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/sportsUpdate_id"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                app:cardCornerRadius="5dp">
+
+                <TextView
+                    android:drawableTop="@drawable/sports"
+                    android:text="Sports Update"
+                    android:textColor="#000000"
+                    android:gravity="center"
+                    android:padding="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    />
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/allNewspaper_id"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                app:cardCornerRadius="5dp">
+
+                <TextView
+                    android:drawableTop="@drawable/newspaper"
+                    android:text="All NewsPapers"
+                    android:gravity="center"
+                    android:textColor="#000000"
+                    android:padding="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    />
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/latestMovie_id"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                app:cardCornerRadius="5dp">
+
+                <TextView
+                    android:drawableTop="@drawable/movie_t"
+                    android:text="Latest Movies"
+                    android:gravity="center"
+                    android:textColor="#000000"
+                    android:padding="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    />
+
+            </androidx.cardview.widget.CardView>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/movieTrailers_id"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                app:cardCornerRadius="5dp">
+
+                <TextView
+                    android:drawableTop="@drawable/ic_menu_movie"
+                    android:text="Movie Trailers"
+                    android:gravity="center"
+                    android:textColor="#000000"
+                    android:padding="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    />
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/mp3Music_id"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                app:cardCornerRadius="5dp">
+
+                <TextView
+                    android:drawableTop="@drawable/music"
+                    android:text="Latest Mp3 Music"
+                    android:textColor="#000000"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    />
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/radio_id"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                app:cardCornerRadius="5dp">
+
+                <TextView
+                    android:drawableTop="@drawable/radio"
+                    android:text="Radio Station"
+                    android:textColor="#000000"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    />
+
+            </androidx.cardview.widget.CardView>
+
+
+        </LinearLayout>
+
+ <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+                >
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/tvChannel_id"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    app:cardCornerRadius="5dp"
+                    android:layout_margin="3dp"
+                    android:layout_height="100dp">
+
+                    <TextView
+                        android:drawableTop="@drawable/tv_channel"
+                        android:text="TV Channel"
+                        android:gravity="center"
+                        android:textColor="#000000"
+                        android:padding="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        />
+
+                </androidx.cardview.widget.CardView>
+
+
+                   <androidx.cardview.widget.CardView
+                       android:id="@+id/latestDrama_id"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                       app:cardCornerRadius="5dp"
+                       android:layout_margin="3dp"
+                    android:layout_height="100dp">
+
+                       <TextView
+                           android:drawableTop="@drawable/channel"
+                           android:text="Latest Drama"
+                           android:gravity="center"
+                           android:textColor="#000000"
+                           android:padding="10dp"
+                           android:layout_width="match_parent"
+                           android:layout_height="100dp"
+                           />
+
+                </androidx.cardview.widget.CardView>
+
+
+
+                   <androidx.cardview.widget.CardView
+                       android:id="@+id/worldTechnology_id"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                       app:cardCornerRadius="5dp"
+                       android:layout_margin="3dp"
+                    android:layout_height="100dp">
+
+                       <TextView
+                           android:drawableTop="@drawable/world"
+                           android:text="World Technology"
+                           android:textColor="#000000"
+                           android:gravity="center"
+                           android:padding="10dp"
+                           android:layout_width="match_parent"
+                           android:layout_height="100dp"
+                           />
+
+                </androidx.cardview.widget.CardView>
+
+
+            </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

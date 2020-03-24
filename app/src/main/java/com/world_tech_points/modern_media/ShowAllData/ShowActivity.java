@@ -1,15 +1,14 @@
-package com.world_tech_points.modern_media.MediaCategory;
+package com.world_tech_points.modern_media.ShowAllData;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -19,8 +18,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.world_tech_points.modern_media.R;
-import com.world_tech_points.modern_media.ShowAllData.ShowDataAdapter;
-import com.world_tech_points.modern_media.ShowAllData.ShowDataClass;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,37 +28,68 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-public class TrailersFragment extends Fragment {
-
+public class ShowActivity extends AppCompatActivity {
 
 
     private RecyclerView recyclerView;
-    private ShowDataAdapter dataAdapter;
-    private ShowDataClass dataClass;
     private List<ShowDataClass> data_list;
+    private ShowDataClass dataClass;
+    private ShowDataAdapter dataAdapter;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-
-        View root = inflater.inflate(R.layout.trailers_movie, container, false);
+    String category;
 
 
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_show);
+
+        Toolbar toolbar = findViewById(R.id.showToolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        recyclerView = findViewById(R.id.showRecyclerView_id);
         dataClass = new ShowDataClass();
         data_list = new ArrayList<>();
-        recyclerView = root.findViewById(R.id.trailersRecyclerView_id);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
+        recyclerView.setLayoutManager(new GridLayoutManager(this,3));
         recyclerView.setHasFixedSize(true);
 
-        movieRetriveMethod();
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null){
+            category = bundle.getString("category");
+            setTitle(category);
+            mp3SongRetriveMethod(category);
 
+        }else {
 
+            dataMissingAlert();
+        }
 
-
-        return root;
     }
 
-    private void movieRetriveMethod(){
+    private void dataMissingAlert(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(ShowActivity.this);
+
+        builder.setTitle("Alert!")
+                .setMessage("Some data is missing. Please try again !")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                       finish();
+
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+
+    }
+
+    private void mp3SongRetriveMethod(final String category){
 
         String url = getString(R.string.main_host_read_links);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -88,7 +116,7 @@ public class TrailersFragment extends Fragment {
 
                     }
 
-                    dataAdapter = new ShowDataAdapter(getContext(),data_list);
+                    dataAdapter = new ShowDataAdapter(ShowActivity.this,data_list);
                     recyclerView.setAdapter(dataAdapter);
                     dataAdapter.notifyDataSetChanged();
 
@@ -96,7 +124,7 @@ public class TrailersFragment extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
 
-                    Toast.makeText(getContext(), "Error"+e, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ShowActivity.this, "Error"+e, Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -106,7 +134,7 @@ public class TrailersFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Toast.makeText(getContext(), ""+error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ShowActivity.this, ""+error, Toast.LENGTH_SHORT).show();
 
             }
         }){
@@ -115,21 +143,17 @@ public class TrailersFragment extends Fragment {
             protected Map<String, String> getParams() throws AuthFailureError {
 
                 Map<String, String> Params = new HashMap<>();
-                //Params.put("category", "Latest_movie");
-                Params.put("category", "Movie_trailers");
+                Params.put("category", category);
 
                 return Params;
             }
 
         };
 
-        RequestQueue queue = Volley.newRequestQueue(getContext());
+        RequestQueue queue = Volley.newRequestQueue(ShowActivity.this);
         queue.add(stringRequest);
 
 
     }
-
-
-
 
 }

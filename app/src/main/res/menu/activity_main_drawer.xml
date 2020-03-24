@@ -6,44 +6,49 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/home"
             android:title="@string/menu_home" />
         <item
             android:id="@+id/nav_tvChannel"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/tv_channel"
             android:title="@string/menu_tv_channel" />
         <item
             android:id="@+id/nav_movieTrailers"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_menu_movie"
             android:title="@string/menu_Movie_trailers" />
         <item
             android:id="@+id/nav_movies"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/movie_t"
             android:title="@string/menu_Movies" />
 
         <item
             android:id="@+id/nav_drama"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/channel"
             android:title="@string/menu_drama" />
 
         <item
             android:id="@+id/nav_MP3"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/music"
             android:title="@string/menu_MP3" />
 
         <item
             android:id="@+id/nav_radioStation"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/radio"
             android:title="@string/menu_radio" />
 
         <item
             android:id="@+id/nav_newsPaper"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/newspaper"
             android:title="@string/menu_newspaper" />
 
         <item
+            android:id="@+id/nav_worldTechnology"
+            android:icon="@drawable/world"
+            android:title="World Technology" />
+
+        <item
             android:id="@+id/nav_sports"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/sports"
             android:title="@string/menu_sports" />
     </group>
 
@@ -52,7 +57,7 @@
 
             <item
                 android:id="@+id/nav_privacy"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/policy"
                 android:title="@string/menu_policy" />
             <item
                 android:id="@+id/nav_share"
@@ -61,11 +66,11 @@
 
             <item
                 android:id="@+id/nav_RateUs"
-                android:icon="@drawable/ic_menu_share"
+                android:icon="@drawable/rate_us"
                 android:title="@string/menu_rateUs" />
             <item
                 android:id="@+id/nav_exits"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/exits"
                 android:title="@string/menu_exits" />
         </menu>
     </item>

@@ -1,7 +1,5 @@
 package com.world_tech_points.modern_media;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,7 +8,6 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.MediaController;
@@ -72,7 +69,7 @@ public class VideoDownloadActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                DownloadManager.Request request = new DownloadManager.Request(Uri.parse("https://www.youtube.com/watch?v=7lQL3CVfhv8&t=6s"));
+                DownloadManager.Request request = new DownloadManager.Request(Uri.parse("https://gaana.com/song/tum-bin-11"));
 
               /*  request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI |
                         DownloadManager.Request.NETWORK_MOBILE);
