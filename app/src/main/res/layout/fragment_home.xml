@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:background="#ffffff"
                 android:textColor="#029110"
-                android:text="Latest MP3 Music"
+                android:text="Newspapers"
                 android:paddingStart="5dp"
                 />
 

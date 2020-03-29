@@ -1,12 +1,19 @@
 package com.world_tech_points.modern_media.MediaCategory;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +25,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.world_tech_points.modern_media.MainActivity;
 import com.world_tech_points.modern_media.R;
 import com.world_tech_points.modern_media.ShowAllData.ShowDataAdapter;
 import com.world_tech_points.modern_media.ShowAllData.ShowDataClass;
@@ -31,6 +39,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.content.Context.CONNECTIVITY_SERVICE;
+
 
 public class TrailersFragment extends Fragment {
 
@@ -40,6 +50,9 @@ public class TrailersFragment extends Fragment {
     private ShowDataAdapter dataAdapter;
     private ShowDataClass dataClass;
     private List<ShowDataClass> data_list;
+    private TextView dataAlertTV;
+
+    int mCount;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -50,10 +63,52 @@ public class TrailersFragment extends Fragment {
         dataClass = new ShowDataClass();
         data_list = new ArrayList<>();
         recyclerView = root.findViewById(R.id.trailersRecyclerView_id);
+        dataAlertTV = root.findViewById(R.id.trailersDataAlert_id);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
         recyclerView.setHasFixedSize(true);
 
-        movieRetriveMethod();
+
+
+        ConnectivityManager manager = (ConnectivityManager)getContext().getSystemService(CONNECTIVITY_SERVICE);
+
+        boolean is3g = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
+                .isConnectedOrConnecting();
+
+        boolean isWifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
+                .isConnectedOrConnecting();
+
+
+        if (is3g) {
+            ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(CONNECTIVITY_SERVICE);
+            NetworkInfo network = connectivityManager.getActiveNetworkInfo();
+            int netSubType = network.getSubtype();
+            if(netSubType == TelephonyManager.NETWORK_TYPE_HSPAP ||
+                    netSubType == TelephonyManager.NETWORK_TYPE_HSDPA ||
+                    netSubType == TelephonyManager.NETWORK_TYPE_HSPA) {
+
+                mCount = 1;
+                movieRetriveMethod();
+
+
+            }
+            else if (netSubType == TelephonyManager.NETWORK_TYPE_1xRTT ||
+                    netSubType == TelephonyManager.NETWORK_TYPE_GPRS ||
+                    netSubType == TelephonyManager.NETWORK_TYPE_EDGE){
+
+                lowMobileDataAlert();
+            }
+
+        }else if (isWifi){
+
+            movieRetriveMethod();
+
+
+        }
+        else
+        {
+            dataConnectionAlert();
+
+        }
 
 
 
@@ -72,6 +127,7 @@ public class TrailersFragment extends Fragment {
                 try {
                     obj = new JSONObject(response);
                     JSONArray dataArray  = obj.getJSONArray("Success");
+                    dataAlertTV.setVisibility(View.GONE);
 
                     for (int i = 0; i < dataArray.length(); i++) {
 
@@ -96,7 +152,6 @@ public class TrailersFragment extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
 
-                    Toast.makeText(getContext(), "Error"+e, Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -106,7 +161,14 @@ public class TrailersFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Toast.makeText(getContext(), ""+error, Toast.LENGTH_SHORT).show();
+                if (mCount >=1){
+
+                    mobileDataAlert();
+
+                }else {
+                    dataConnectionAlert();
+                }
+
 
             }
         }){
@@ -115,7 +177,6 @@ public class TrailersFragment extends Fragment {
             protected Map<String, String> getParams() throws AuthFailureError {
 
                 Map<String, String> Params = new HashMap<>();
-                //Params.put("category", "Latest_movie");
                 Params.put("category", "Movie_trailers");
 
                 return Params;
@@ -129,6 +190,84 @@ public class TrailersFragment extends Fragment {
 
     }
 
+    private void lowMobileDataAlert(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        builder.setTitle("Low data Alert!")
+                .setMessage("You data connection is slow")
+                .setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                getActivity().finishAffinity();
+
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+
+    }
+
+    private void mobileDataAlert(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        builder.setTitle("Mobile data Alert!")
+                .setMessage("Have you enough data?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        startActivity(new Intent(getContext(),MainActivity.class));
+
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                getActivity().finishAffinity();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+
+    }
+
+    private void dataConnectionAlert(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        builder.setTitle("Data Connection Alert!")
+                .setMessage("Please Connected your Internet first")
+                .setPositiveButton("Then try again", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        startActivity(new Intent(getContext(), MainActivity.class));
+
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                getActivity().finish();
+
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+
+    }
 
 
 

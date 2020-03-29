@@ -1,6 +1,7 @@
 package com.world_tech_points.modern_media.MP3_Songs;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 import com.world_tech_points.modern_media.R;
+import com.world_tech_points.modern_media.VideoPlayerActivity;
+import com.world_tech_points.modern_media.WebViewActivity;
+
 import java.util.List;
 
 
@@ -34,7 +38,7 @@ public class Mp3_Adapter extends RecyclerView.Adapter<Mp3_Adapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
 
         mp3_class = mp3_List.get(position);
 
@@ -42,6 +46,19 @@ public class Mp3_Adapter extends RecyclerView.Adapter<Mp3_Adapter.ViewHolder> {
         holder.loveCount.setText(mp3_class.getLove_count());
         holder.viewCount.setText(mp3_class.getView_count());
         Picasso.get().load(mp3_class.getImage_link()).placeholder(R.drawable.movie_t).into(holder.imageView);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                mp3_class = mp3_List.get(position);
+                Intent intent = new Intent(context, WebViewActivity.class);
+                intent.putExtra("link",mp3_class.getVideo_link());
+                context.startActivity(intent);
+
+
+            }
+        });
 
     }
 

@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CategoryActivity">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="10dp"
+
+        >
+
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/categoryAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/categoryToolBar_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/green_light"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/movieCategory_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="50dp"
+        android:padding="5dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.813"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/categoryAppBar">
+
+
+
+        <TextView
+            android:id="@+id/banglaMovies_id"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/category_button"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="#7C4DFF"
+            android:text="Bangla Movies" />
+
+        <TextView
+            android:id="@+id/hindiMovies_id"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/category_button"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="#7C4DFF"
+            android:text="Hindi Movies" />
+
+        <TextView
+            android:id="@+id/englishMovies_id"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/category_button"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="#7C4DFF"
+            android:text="English movies" />
+
+        <TextView
+            android:id="@+id/chineseMovie_id"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/category_button"
+            android:textSize="20sp"
+            android:textColor="#7C4DFF"
+            android:text="Chinese Movies" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/dramaCategory_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="50dp"
+        android:padding="5dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.813"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/movieCategory_id">
+
+
+
+        <TextView
+            android:id="@+id/banglaDrama_id"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/category_button"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="#7C4DFF"
+            android:text="Bangla Drama" />
+
+        <TextView
+            android:id="@+id/hindiDrama_id"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/category_button"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="#7C4DFF"
+            android:text="Hindi Drama" />
+
+        <TextView
+            android:id="@+id/englishDrama_id"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/category_button"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="#7C4DFF"
+            android:text="English Drama" />
+
+        <TextView
+            android:id="@+id/chineseDrama_id"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/category_button"
+            android:textSize="20sp"
+            android:textColor="#7C4DFF"
+            android:text="Chinese Drama" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/mp3Category_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="50dp"
+        android:padding="5dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.813"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dramaCategory_id">
+
+
+
+        <TextView
+            android:id="@+id/banglaMp3_id"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/category_button"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="#7C4DFF"
+            android:text="Bangla Mp3 Song" />
+
+        <TextView
+            android:id="@+id/hindiMp3_id"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/category_button"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="#7C4DFF"
+            android:text="Hindi Mp3 Song" />
+
+        <TextView
+            android:id="@+id/englishMp3_id"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/category_button"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="#7C4DFF"
+            android:text="English Mp3 Song" />
+
+
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/trailersCategory_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="50dp"
+        android:padding="5dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.813"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mp3Category_id">
+
+
+
+        <TextView
+            android:id="@+id/trailersBanglaMovies_id"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/category_button"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="#7C4DFF"
+            android:text="Bangla Movies Trailers" />
+
+        <TextView
+            android:id="@+id/trailersHindiMovies_id"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/category_button"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="#7C4DFF"
+            android:text="Hindi Movies Trailers" />
+
+        <TextView
+            android:id="@+id/trailersEnglishMovies_id"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/category_button"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="#7C4DFF"
+            android:text="English movies Trailers" />
+
+        <TextView
+            android:id="@+id/trailersChineseMovie_id"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/category_button"
+            android:textSize="20sp"
+            android:textColor="#7C4DFF"
+            android:text="Chinese Movies Trailers" />
+
+
+    </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

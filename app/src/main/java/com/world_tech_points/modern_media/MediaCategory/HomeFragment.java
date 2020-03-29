@@ -1,10 +1,15 @@
 package com.world_tech_points.modern_media.MediaCategory;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +19,7 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,14 +34,17 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.squareup.picasso.Picasso;
+import com.world_tech_points.modern_media.CategoryActivity;
 import com.world_tech_points.modern_media.Dramas.DramaAdapter;
 import com.world_tech_points.modern_media.Dramas.DramaClass;
 import com.world_tech_points.modern_media.MP3_Songs.Mp3_Adapter;
 import com.world_tech_points.modern_media.MP3_Songs.Mp3_class;
+import com.world_tech_points.modern_media.MainActivity;
 import com.world_tech_points.modern_media.R;
 import com.world_tech_points.modern_media.ShowAllData.ShowActivity;
 import com.world_tech_points.modern_media.Trailers.TrailersAdapter;
 import com.world_tech_points.modern_media.Trailers.TrailersClass;
+import com.world_tech_points.modern_media.VideoPlayerActivity;
 import com.world_tech_points.modern_media.WebViewActivity;
 
 import org.json.JSONArray;
@@ -48,6 +57,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static android.content.Context.CONNECTIVITY_SERVICE;
 
 
 public class HomeFragment extends Fragment {
@@ -66,6 +77,8 @@ public class HomeFragment extends Fragment {
     RecyclerView mp3RecyclerView;
     RecyclerView dramaRecyclerView;
     RecyclerView trailersRecyclerView;
+
+    int mCount;
 
 
     Mp3_class mp3_class;
@@ -131,11 +144,55 @@ public class HomeFragment extends Fragment {
         dramaRecyclerView.setLayoutManager(dramaLayoutManager);
         dramaRecyclerView.setHasFixedSize(true);
 
+        ConnectivityManager manager = (ConnectivityManager)getContext().getSystemService(CONNECTIVITY_SERVICE);
+
+        boolean is3g = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
+                .isConnectedOrConnecting();
+
+        boolean isWifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
+                .isConnectedOrConnecting();
+
+
+        if (is3g) {
+            ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(CONNECTIVITY_SERVICE);
+            NetworkInfo network = connectivityManager.getActiveNetworkInfo();
+            int netSubType = network.getSubtype();
+            if(netSubType == TelephonyManager.NETWORK_TYPE_HSPAP ||
+                    netSubType == TelephonyManager.NETWORK_TYPE_HSDPA ||
+                    netSubType == TelephonyManager.NETWORK_TYPE_HSPA) {
+
+                mCount = 1;
+                mp3SongRetriveMethod();
+                dramaRetriveMethod();
+                trailersRetriveMethod();
+
+
+            }
+            else if (netSubType == TelephonyManager.NETWORK_TYPE_1xRTT ||
+                    netSubType == TelephonyManager.NETWORK_TYPE_GPRS ||
+                    netSubType == TelephonyManager.NETWORK_TYPE_EDGE){
+
+                lowMobileDataAlert();
+            }
+
+        }else if (isWifi){
+
+            mp3SongRetriveMethod();
+            dramaRetriveMethod();
+            trailersRetriveMethod();
+
+
+        }
+        else
+        {
+            dataConnectionAlert();
+        }
+
         mp3TV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                categorySent("Mp3_music");
+                categorySent("Newspaper");
             }
         });
 
@@ -143,7 +200,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                categorySent("Movie_trailers");
+                categorySent2("trailers");
             }
         });
 
@@ -152,19 +209,16 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                categorySent("Drama");
+                categorySent2("drama");
             }
         });
 
-       mp3SongRetriveMethod();
-       dramaRetriveMethod();
-       trailersRetriveMethod();
 
        movieBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                categorySent("Latest_movie");
+                categorySent2("movie");
 
             }
         });
@@ -172,7 +226,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                categorySent("Movie_trailers");
+                categorySent2("trailers");
 
             }
         });
@@ -180,7 +234,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                categorySent("Drama");
+                categorySent2("drama");
 
             }
         });
@@ -188,7 +242,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                categorySent("Mp3_music");
+                categorySent2("mp3");
             }
         });
 
@@ -234,13 +288,15 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        String images [] = new String[] {"https://image.shutterstock.com/image-photo/colorful-flower-on-dark-tropical-260nw-721703848.jpg",
-                                         "https://image.shutterstock.com/image-photo/beautiful-water-drop-on-dandelion-260nw-789676552.jpg"};
+        String images [] = new String[] {"https://image.prntscr.com/image/qHmkWY9lQFSMVT4ZxExUmg.gif",
+                                          "https://image.prntscr.com/image/IHHbm6zgQ22QxONnFGxOAg.jpg",
+                                         "https://image.prntscr.com/image/nN3za6ySSpupvGkvcvTnXA.gif"};
 
         for (String image : images){
 
             flipperImages(image);
         }
+
 
         viewFlipper.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -260,6 +316,15 @@ public class HomeFragment extends Fragment {
     private void categorySent(String value){
 
         Intent intent = new Intent(getContext(), ShowActivity.class);
+        intent.putExtra("category",value);
+        startActivity(intent);
+
+
+    }
+
+    private void categorySent2(String value){
+
+        Intent intent = new Intent(getContext(), CategoryActivity.class);
         intent.putExtra("category",value);
         startActivity(intent);
 
@@ -317,7 +382,6 @@ public class HomeFragment extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
 
-                    Toast.makeText(getContext(), "Error"+e, Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -327,7 +391,14 @@ public class HomeFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Toast.makeText(getContext(), ""+error, Toast.LENGTH_SHORT).show();
+                if (mCount >=1){
+
+                    mobileDataAlert();
+
+                }else {
+                    dataConnectionAlert();
+                }
+
 
             }
         }){
@@ -336,7 +407,7 @@ public class HomeFragment extends Fragment {
             protected Map<String, String> getParams() throws AuthFailureError {
 
                 Map<String, String> Params = new HashMap<>();
-                Params.put("category", "Mp3_music");
+                Params.put("category", "Newspaper");
 
                 return Params;
             }
@@ -384,8 +455,6 @@ public class HomeFragment extends Fragment {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-
-                    Toast.makeText(getContext(), "Error"+e, Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -395,7 +464,13 @@ public class HomeFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Toast.makeText(getContext(), ""+error, Toast.LENGTH_SHORT).show();
+                if (mCount >=1){
+
+                    mobileDataAlert();
+
+                }else {
+                    dataConnectionAlert();
+                }
 
             }
         }){
@@ -455,8 +530,6 @@ public class HomeFragment extends Fragment {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-
-                    Toast.makeText(getContext(), "Error"+e, Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -466,8 +539,13 @@ public class HomeFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Toast.makeText(getContext(), ""+error, Toast.LENGTH_SHORT).show();
+                if (mCount >=1){
 
+                    mobileDataAlert();
+
+                }else {
+                    dataConnectionAlert();
+                }
             }
         }){
 
@@ -487,4 +565,91 @@ public class HomeFragment extends Fragment {
 
 
     }
+
+
+    private void dataConnectionAlert(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        builder.setTitle("Data Connection Alert!")
+                .setMessage("Please Connected your Internet first")
+                .setPositiveButton("Then try again", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        startActivity(new Intent(getContext(), MainActivity.class));
+
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+
+    }
+
+
+    private void lowMobileDataAlert(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        builder.setTitle("Low data Alert!")
+                .setMessage("You data connection is slow")
+                .setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                getActivity().finishAffinity();
+
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+
+    }
+
+    private void mobileDataAlert(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        builder.setTitle("Mobile data Alert!")
+                .setMessage("Have you enough data?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        startActivity(new Intent(getContext(),MainActivity.class));
+
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+              getActivity().finishAffinity();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+
+    }
+
+
+
+
+
+
 }

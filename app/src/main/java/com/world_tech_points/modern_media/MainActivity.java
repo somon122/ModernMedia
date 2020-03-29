@@ -1,7 +1,9 @@
 package com.world_tech_points.modern_media;
 
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import com.google.android.material.navigation.NavigationView;
@@ -90,32 +92,44 @@ public class MainActivity extends AppCompatActivity {
                    categorySent("Tv_channel");
 
                 }else if (id == R.id.nav_movies){
-                    categorySent("Latest_movie");
+                    categorySent2("movie");
                 }else if (id == R.id.nav_radioStation){
                     categorySent("Radio_station");
                 }else if (id == R.id.nav_movieTrailers){
-                    categorySent("Movie_trailers");
+                    categorySent2("trailers");
                 }else if (id == R.id.nav_sports){
                     categorySent("Sports_update");
                 }else if (id == R.id.nav_drama){
-                    categorySent("Drama");
+                    categorySent2("drama");
                 }else if (id == R.id.nav_MP3){
-                    categorySent("Mp3_music");
+                    categorySent2("mp3");
                 }else if (id == R.id.nav_newsPaper){
                     categorySent("Newspaper");
                 }else if (id == R.id.nav_worldTechnology){
                     categorySent("World_technology");
-                }
+                } else if (id == R.id.nav_privacy){
 
-
-                else if (id == R.id.nav_privacy){
                     Toast.makeText(MainActivity.this, "nav_privacy", Toast.LENGTH_SHORT).show();
+                   /* try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("")));
+                    }catch (ActivityNotFoundException e){
+
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("")));
+
+                    }*/
+
 
                 }else if (id == R.id.nav_share){
-                    Toast.makeText(MainActivity.this, "nav_share", Toast.LENGTH_SHORT).show();
+                   shareApp();
 
                 }else if (id == R.id.nav_RateUs){
-                    Toast.makeText(MainActivity.this, "nav_RateUs", Toast.LENGTH_SHORT).show();
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" +getPackageName())));
+                    }catch (ActivityNotFoundException e){
+
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" +getPackageName())));
+
+                    }
 
                 }else if (id == R.id.nav_exits){
                     exitsAlert();
@@ -138,9 +152,30 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void shareApp() {
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        String shareBody = "App link : https://youtu.be/eGn-2tGoG6s";
+        String shareSub = "You can enjoy by Modern Media Android App";
+        intent.putExtra(Intent.EXTRA_SUBJECT,shareSub);
+        intent.putExtra(Intent.EXTRA_TEXT,shareBody);
+        startActivity(Intent.createChooser(intent,"Entertainment App"));
+
+    }
+
     private void categorySent(String value){
 
         Intent intent = new Intent(MainActivity.this, ShowActivity.class);
+        intent.putExtra("category",value);
+        startActivity(intent);
+
+
+    }
+
+ private void categorySent2(String value){
+
+        Intent intent = new Intent(MainActivity.this, CategoryActivity.class);
         intent.putExtra("category",value);
         startActivity(intent);
 
@@ -153,17 +188,19 @@ public class MainActivity extends AppCompatActivity {
 
         int id = item.getItemId();
 
-        if (id== R.id.action_exits){
-            exitsAlert();
+        switch (id){
 
-        }else if (id==R.id.action_settings){
+            case R.id.action_exits:
+                exitsAlert();
+                break;
+            case R.id.action_Admin:
+                startActivity(new Intent(MainActivity.this,IdTestActivity.class));
+                break;
 
-            Toast.makeText(this, "Setting coming Soon..", Toast.LENGTH_SHORT).show();
+            default:
+                break;
 
-        }else if (id==R.id.action_Admin){
-           startActivity(new Intent(MainActivity.this,SubmitActivity.class));
         }
-
 
         return super.onOptionsItemSelected(item);
     }
@@ -178,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
-                            finish();
+                           finishAffinity();
 
                         }
                     }).setNegativeButton("No", new DialogInterface.OnClickListener() {

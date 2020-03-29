@@ -45,7 +45,7 @@ public class ShowDataAdapter extends RecyclerView.Adapter<ShowDataAdapter.ViewHo
         holder.title.setText(dataClass.getVideo_title());
         holder.loveCount.setText(dataClass.getLove_count());
         holder.viewCount.setText(dataClass.getView_count());
-        Picasso.get().load(dataClass.getImage_link()).placeholder(R.drawable.movie_t).into(holder.imageView);
+        Picasso.get().load(dataClass.getImage_link()).fit().placeholder(R.drawable.movie_t).into(holder.imageView);
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -55,7 +55,7 @@ public class ShowDataAdapter extends RecyclerView.Adapter<ShowDataAdapter.ViewHo
                 dataClass = data_List.get(position);
                 String category = dataClass.getCategory();
 
-                if (category.equals("Drama") || category.equals("Mp3_music") || category.equals("Latest_Movie") || category.equals("Movie_trailers")){
+                if (category.equals("Drama") || category.equals("Mp3_music") || category.equals("Latest_movie") || category.equals("Movie_trailers")){
 
                     Intent intent = new Intent(context, VideoPlayerActivity.class);
                     intent.putExtra("id",dataClass.getVideo_link());

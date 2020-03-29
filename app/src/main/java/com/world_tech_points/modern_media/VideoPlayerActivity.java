@@ -56,6 +56,7 @@ public class VideoPlayerActivity extends YouTubeBaseActivity implements YouTubeP
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
 
         ConnectivityManager manager = (ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);
+
         boolean is3g = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
                 .isConnectedOrConnecting();
 
@@ -116,9 +117,7 @@ public class VideoPlayerActivity extends YouTubeBaseActivity implements YouTubeP
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        mCount = mCount+1;
-                        playerView = findViewById(R.id.youTubePlayerView_id);
-                        playerView.initialize(key,VideoPlayerActivity.this);
+                       finish();
 
                     }
                 }).setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -146,6 +145,7 @@ public class VideoPlayerActivity extends YouTubeBaseActivity implements YouTubeP
                     public void onClick(DialogInterface dialog, int which) {
 
 
+                        mCount = mCount+1;
                         playerView = findViewById(R.id.youTubePlayerView_id);
                         playerView.initialize(key,VideoPlayerActivity.this);
 
