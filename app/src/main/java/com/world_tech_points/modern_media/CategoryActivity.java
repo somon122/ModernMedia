@@ -10,6 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.world_tech_points.modern_media.ShowAllData.ShowActivity;
 
 public class CategoryActivity extends AppCompatActivity implements View.OnClickListener {
@@ -22,6 +25,8 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
 
     private LinearLayout movieLayout,dramaLayout,trailersLayout,mp3Layout;
 
+    private AdView mAdView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +38,12 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setTitle("Media Category");
+
+        MobileAds.initialize(this,
+                "ca-app-pub-3940256099942544~3347511713");
+        mAdView = findViewById(R.id.categoryBannerAdView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
 
         movieLayout = findViewById(R.id.movieCategory_id);

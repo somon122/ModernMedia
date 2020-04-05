@@ -19,6 +19,9 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -109,14 +112,13 @@ public class MainActivity extends AppCompatActivity {
                     categorySent("World_technology");
                 } else if (id == R.id.nav_privacy){
 
-                    Toast.makeText(MainActivity.this, "nav_privacy", Toast.LENGTH_SHORT).show();
-                   /* try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("")));
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://somonapp.blogspot.com/2020/03/modern-media-app-privacy-policy.html")));
                     }catch (ActivityNotFoundException e){
 
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("")));
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://somonapp.blogspot.com/2020/03/modern-media-app-privacy-policy.html")));
 
-                    }*/
+                    }
 
 
                 }else if (id == R.id.nav_share){
@@ -194,7 +196,9 @@ public class MainActivity extends AppCompatActivity {
                 exitsAlert();
                 break;
             case R.id.action_Admin:
-                startActivity(new Intent(MainActivity.this,IdTestActivity.class));
+
+                adminPanel("122media#");
+
                 break;
 
             default:
@@ -246,6 +250,65 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+
+    private void adminPanel(final String password) {
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        View view1 = getLayoutInflater().inflate(R.layout.admin_control, null);
+
+
+        final EditText passwordET = view1.findViewById(R.id.adminCheckPassword_id);
+        Button submit = view1.findViewById(R.id.adminSubmit_id);
+
+
+        builder.setTitle("Admin Panel");
+        builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                dialogInterface.dismiss();
+            }
+        });
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String mPassword = passwordET.getText().toString();
+
+                if (mPassword.isEmpty()) {
+
+                    passwordET.setError("Please enter password");
+
+                } else {
+
+                    if (mPassword.equals(password)) {
+
+                        Toast.makeText(MainActivity.this, "Password is matches", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(MainActivity.this, IdTestActivity.class));
+
+
+                    } else {
+
+                        Toast.makeText(MainActivity.this, "Password is not matches", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+
+        builder.setView(view1);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+
+    }
+
+
+
+
+
 }
 
 

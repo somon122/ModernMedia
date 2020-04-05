@@ -8,6 +8,8 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -23,15 +25,20 @@ import com.google.android.youtube.player.YouTubePlayerView;
 public class VideoPlayerActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
 
 
-    YouTubePlayerView playerView;
-    String key = "AIzaSyBOzERj-Xnyneb5AHCyGYojRuaKvg7WvVY";
-    String id = "7lQL3CVfhv8";
-    int mCount = 0;
+    private YouTubePlayerView playerView;
+    private String key = "AIzaSyBOzERj-Xnyneb5AHCyGYojRuaKvg7WvVY";
+    private String id = "7lQL3CVfhv8";
+    private int mCount = 0;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_video_player);
 
 

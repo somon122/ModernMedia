@@ -9,6 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.facebook.ads.AbstractAdListener;
+import com.facebook.ads.Ad;
+import com.facebook.ads.AdError;
+import com.facebook.ads.AudienceNetworkAds;
+import com.facebook.ads.InterstitialAd;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.squareup.picasso.Picasso;
 import com.world_tech_points.modern_media.R;
@@ -26,12 +32,15 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.ViewHo
     public TrailersAdapter(Context context, List<TrailersClass> trailersList) {
         this.context = context;
         this.trailersList = trailersList;
+
+
     }
 
     @NonNull
     @Override
     public TrailersAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.mp3_model_view,parent,false);
+
 
         return new TrailersAdapter.ViewHolder(view);
     }
@@ -50,10 +59,10 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.ViewHo
             @Override
             public void onClick(View v) {
 
-                trailersClass = trailersList.get(position);
-                Intent intent = new Intent(context, VideoPlayerActivity.class);
-                intent.putExtra("id",trailersClass.getVideo_link());
-                context.startActivity(intent);
+                   trailersClass = trailersList.get(position);
+                   Intent intent = new Intent(context, VideoPlayerActivity.class);
+                   intent.putExtra("id",trailersClass.getVideo_link());
+                   context.startActivity(intent);
 
 
             }

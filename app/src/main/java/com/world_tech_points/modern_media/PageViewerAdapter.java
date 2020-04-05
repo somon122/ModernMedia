@@ -14,7 +14,7 @@ import com.world_tech_points.modern_media.MediaCategory.TrailersFragment;
 
 public class PageViewerAdapter extends FragmentPagerAdapter {
 
-    int position;
+    private int position;
 
     public PageViewerAdapter(@NonNull FragmentManager fm, int position) {
         super(fm, position);

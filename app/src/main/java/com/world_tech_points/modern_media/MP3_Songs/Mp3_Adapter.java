@@ -9,6 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.facebook.ads.AbstractAdListener;
+import com.facebook.ads.Ad;
+import com.facebook.ads.AdError;
+import com.facebook.ads.AudienceNetworkAds;
+import com.facebook.ads.InterstitialAd;
 import com.squareup.picasso.Picasso;
 import com.world_tech_points.modern_media.R;
 import com.world_tech_points.modern_media.VideoPlayerActivity;
@@ -34,6 +40,7 @@ public class Mp3_Adapter extends RecyclerView.Adapter<Mp3_Adapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.mp3_model_view,parent,false);
 
+
         return new Mp3_Adapter.ViewHolder(view);
     }
 
@@ -51,13 +58,13 @@ public class Mp3_Adapter extends RecyclerView.Adapter<Mp3_Adapter.ViewHolder> {
             @Override
             public void onClick(View v) {
 
-                mp3_class = mp3_List.get(position);
-                Intent intent = new Intent(context, WebViewActivity.class);
-                intent.putExtra("link",mp3_class.getVideo_link());
-                context.startActivity(intent);
 
+                    mp3_class = mp3_List.get(position);
+                    Intent intent = new Intent(context, WebViewActivity.class);
+                    intent.putExtra("link",mp3_class.getVideo_link());
+                    context.startActivity(intent);
 
-            }
+                }
         });
 
     }

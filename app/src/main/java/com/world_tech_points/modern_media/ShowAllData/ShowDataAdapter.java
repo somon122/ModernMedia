@@ -9,6 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.facebook.ads.AbstractAdListener;
+import com.facebook.ads.Ad;
+import com.facebook.ads.AdError;
+import com.facebook.ads.AudienceNetworkAds;
+import com.facebook.ads.InterstitialAd;
 import com.squareup.picasso.Picasso;
 import com.world_tech_points.modern_media.R;
 import com.world_tech_points.modern_media.VideoPlayerActivity;
@@ -20,9 +26,12 @@ import java.util.List;
 public class ShowDataAdapter extends RecyclerView.Adapter<ShowDataAdapter.ViewHolder> {
 
 
-    ShowDataClass dataClass;
-    Context context;
-    List<ShowDataClass> data_List;
+    private ShowDataClass dataClass;
+    private Context context;
+    private List<ShowDataClass> data_List;
+
+    private int  mPosition;
+    private InterstitialAd mInterstitialAd;
 
     public ShowDataAdapter(Context context, List<ShowDataClass> data_List) {
         this.context = context;
@@ -33,6 +42,52 @@ public class ShowDataAdapter extends RecyclerView.Adapter<ShowDataAdapter.ViewHo
     @Override
     public ShowDataAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.show_data_model_view,parent,false);
+
+        AudienceNetworkAds.initialize(context);
+        mInterstitialAd = new InterstitialAd(context, context.getString(R.string.facebookInterstitialAd));
+
+
+        mInterstitialAd.setAdListener(new AbstractAdListener() {
+            @Override
+            public void onError(Ad ad, AdError error) {
+                super.onError(ad, error);
+            }
+
+            @Override
+            public void onAdLoaded(Ad ad) {
+                super.onAdLoaded(ad);
+            }
+
+            @Override
+            public void onAdClicked(Ad ad) {
+                super.onAdClicked(ad);
+            }
+
+            @Override
+            public void onInterstitialDisplayed(Ad ad) {
+                super.onInterstitialDisplayed(ad);
+            }
+
+            @Override
+            public void onInterstitialDismissed(Ad ad) {
+                super.onInterstitialDismissed(ad);
+
+                    dataClass = data_List.get(mPosition);
+                    Intent intent = new Intent(context, WebViewActivity.class);
+                    intent.putExtra("link",dataClass.getVideo_link());
+                    context.startActivity(intent);
+
+
+            }
+
+            @Override
+            public void onLoggingImpression(Ad ad) {
+                super.onLoggingImpression(ad);
+            }
+        });
+        mInterstitialAd.loadAd();
+
+
 
         return new ShowDataAdapter.ViewHolder(view);
     }
@@ -52,26 +107,40 @@ public class ShowDataAdapter extends RecyclerView.Adapter<ShowDataAdapter.ViewHo
             @Override
             public void onClick(View v) {
 
-                dataClass = data_List.get(position);
-                String category = dataClass.getCategory();
 
-                if (category.equals("Drama") || category.equals("Mp3_music") || category.equals("Latest_movie") || category.equals("Movie_trailers")){
+                    dataClass = data_List.get(position);
+                    String category = dataClass.getCategory();
 
-                    Intent intent = new Intent(context, VideoPlayerActivity.class);
-                    intent.putExtra("id",dataClass.getVideo_link());
-                    context.startActivity(intent);
+                    if (category.equals("Newspaper") || category.equals("Radio_station") || category.equals("World_technology")|| category.equals("Sports_update") || category.equals("Tv_channel")){
 
 
-                }else {
+                        if (mInterstitialAd.isAdLoaded()){
 
-                    Intent intent = new Intent(context, WebViewActivity.class);
-                    intent.putExtra("link",dataClass.getVideo_link());
-                    context.startActivity(intent);
+                            mPosition = position;
+                            mInterstitialAd.show();
+
+
+                        }else {
+
+                            Intent intent = new Intent(context, WebViewActivity.class);
+                            intent.putExtra("link",dataClass.getVideo_link());
+                            context.startActivity(intent);
+
+                        }
+
+                    }else {
+
+                        Intent intent = new Intent(context, VideoPlayerActivity.class);
+                        intent.putExtra("id",dataClass.getVideo_link());
+                        context.startActivity(intent);
+
+                    }
 
                 }
 
 
-            }
+
+
         });
 
     }

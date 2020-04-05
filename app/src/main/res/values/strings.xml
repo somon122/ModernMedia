@@ -26,10 +26,18 @@
     <string name="menu_exits">Exits</string>
 
 
+
+    <string name="facebookInterstitialAd">836624656846817_836625390180077</string>
+    <string name="facebookBannerAd">836624656846817_836630163512933</string>
+
+    <string name="admobAppId">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="admobRewardAd">ca-app-pub-3940256099942544/5224354917</string>
+    <string name="admobBannedAdViewAd">ca-app-pub-3940256099942544/6300978111</string>
+
+
+
+
     // API links
-
-    <string name="localhost_links">http://192.168.0.103:80/Modern_media/read_yt.php</string>
-
     <string name="main_host_read_links">https://somonapp.000webhostapp.com/modern_media/read_yt.php</string>
     <string name="main_host_write_links">https://somonapp.000webhostapp.com/modern_media/write_yt.php</string>
 

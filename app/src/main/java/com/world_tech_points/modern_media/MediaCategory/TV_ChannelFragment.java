@@ -9,8 +9,8 @@ import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -25,11 +25,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.facebook.ads.AdSize;
+import com.facebook.ads.AdView;
 import com.world_tech_points.modern_media.MainActivity;
 import com.world_tech_points.modern_media.R;
 import com.world_tech_points.modern_media.ShowAllData.ShowDataAdapter;
 import com.world_tech_points.modern_media.ShowAllData.ShowDataClass;
-import com.world_tech_points.modern_media.SubmitActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,13 +52,13 @@ public class TV_ChannelFragment extends Fragment {
     private ShowDataClass dataClass;
     private List<ShowDataClass> data_list;
     private TextView dataAlertTV;
+    private int mCount;
+    private AdView adView;
 
-    int mCount;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_channel, container, false);
-
 
 
         dataClass = new ShowDataClass();
@@ -66,6 +67,13 @@ public class TV_ChannelFragment extends Fragment {
         dataAlertTV = root.findViewById(R.id.tvDataAlert_id);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
         recyclerView.setHasFixedSize(true);
+
+        adView = new AdView(getContext(), getString(R.string.facebookBannerAd), AdSize.BANNER_HEIGHT_50);
+        LinearLayout adContainer = (LinearLayout) root.findViewById(R.id.tv_banner_container_id);
+        adContainer.addView(adView);
+        adView.loadAd();
+
+
 
 
         ConnectivityManager manager = (ConnectivityManager)getContext().getSystemService(CONNECTIVITY_SERVICE);
@@ -85,9 +93,9 @@ public class TV_ChannelFragment extends Fragment {
                     netSubType == TelephonyManager.NETWORK_TYPE_HSDPA ||
                     netSubType == TelephonyManager.NETWORK_TYPE_HSPA) {
 
-                mCount = 1;
-                movieRetriveMethod();
+                    mCount = 1;
 
+                    movieRetriveMethod();
 
             }
             else if (netSubType == TelephonyManager.NETWORK_TYPE_1xRTT ||
@@ -99,7 +107,9 @@ public class TV_ChannelFragment extends Fragment {
 
         }else if (isWifi){
 
-            movieRetriveMethod();
+            mCount = 1;
+
+                movieRetriveMethod();
 
 
         }
@@ -108,8 +118,6 @@ public class TV_ChannelFragment extends Fragment {
             dataConnectionAlert();
 
         }
-
-
 
 
 

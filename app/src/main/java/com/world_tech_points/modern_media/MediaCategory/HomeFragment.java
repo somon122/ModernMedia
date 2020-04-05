@@ -1,13 +1,9 @@
 package com.world_tech_points.modern_media.MediaCategory;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
@@ -17,14 +13,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -32,7 +26,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.youtube.player.YouTubeBaseActivity;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.rewarded.RewardItem;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdCallback;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.squareup.picasso.Picasso;
 import com.world_tech_points.modern_media.CategoryActivity;
 import com.world_tech_points.modern_media.Dramas.DramaAdapter;
@@ -44,15 +46,10 @@ import com.world_tech_points.modern_media.R;
 import com.world_tech_points.modern_media.ShowAllData.ShowActivity;
 import com.world_tech_points.modern_media.Trailers.TrailersAdapter;
 import com.world_tech_points.modern_media.Trailers.TrailersClass;
-import com.world_tech_points.modern_media.VideoPlayerActivity;
 import com.world_tech_points.modern_media.WebViewActivity;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -64,34 +61,27 @@ import static android.content.Context.CONNECTIVITY_SERVICE;
 public class HomeFragment extends Fragment {
 
 
-    String link = "https://gaana.com/";
-    String link2 = "http://www.jagobd.com/btvworld";
-    String link3 = "http://172.50.50.8";
-    String link4 = "http://172.16.50.4";
-
-    MediaPlayer mediaPlayer;
-
-    ViewFlipper viewFlipper;
-
+    private ViewFlipper viewFlipper;
     // ----- mp3 variable----
-    RecyclerView mp3RecyclerView;
-    RecyclerView dramaRecyclerView;
-    RecyclerView trailersRecyclerView;
+    private RecyclerView mp3RecyclerView;
+    private RecyclerView dramaRecyclerView;
+    private RecyclerView trailersRecyclerView;
+    private int mCount;
+    private Mp3_class mp3_class;
+    private List<Mp3_class>mp3List;
+    private Mp3_Adapter mp3_adapter;
 
-    int mCount;
+    private DramaClass dramaClass;
+    private List<DramaClass>dramaList;
+    private DramaAdapter drama_adapter;
+
+    private TrailersClass trailersClass;
+    private List<TrailersClass>trailersList;
+    private TrailersAdapter trailersAdapter;
 
 
-    Mp3_class mp3_class;
-    List<Mp3_class>mp3List;
-    Mp3_Adapter mp3_adapter;
+    private RewardedAd rewardedAd;
 
-    DramaClass dramaClass;
-    List<DramaClass>dramaList;
-    DramaAdapter drama_adapter;
-
-    TrailersClass trailersClass;
-    List<TrailersClass>trailersList;
-    TrailersAdapter trailersAdapter;
 
     TextView dramaAllView,mp3TV,trailersAllView;
     private CardView sportsBt, newspaperBt, movieBt,mTrailersBt,musicBt,radioBt,tvBt,dramaBt,worldTBt;
@@ -105,8 +95,25 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
 
-        viewFlipper = root.findViewById(R.id.viewFlipper_id);
+        MobileAds.initialize(getContext(),
+                getString(R.string.admobAppId));
+        rewardedAd = new RewardedAd(getContext(),getString(R.string.admobRewardAd)
+                );
 
+        RewardedAdLoadCallback adLoadCallback = new RewardedAdLoadCallback() {
+            @Override
+            public void onRewardedAdLoaded() {
+
+            }
+
+            @Override
+            public void onRewardedAdFailedToLoad(int errorCode) {
+
+            }
+        };
+        rewardedAd.loadAd(new AdRequest.Builder().build(), adLoadCallback);
+
+        viewFlipper = root.findViewById(R.id.viewFlipper_id);
         movieBt = root.findViewById(R.id.latestMovie_id);
         mTrailersBt = root.findViewById(R.id.movieTrailers_id);
         musicBt = root.findViewById(R.id.mp3Music_id);
@@ -177,6 +184,7 @@ public class HomeFragment extends Fragment {
 
         }else if (isWifi){
 
+            mCount = 1;
             mp3SongRetriveMethod();
             dramaRetriveMethod();
             trailersRetriveMethod();
@@ -192,7 +200,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                categorySent("Newspaper");
+                rewardAdsShow("Newspaper");
             }
         });
 
@@ -200,7 +208,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                categorySent2("trailers");
+                rewardAdsShow2("trailers");
             }
         });
 
@@ -209,16 +217,21 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                categorySent2("drama");
+                rewardAdsShow2("drama");
             }
         });
+
+
+
+
 
 
        movieBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                categorySent2("movie");
+                rewardAdsShow2("movie");
+
 
             }
         });
@@ -226,7 +239,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                categorySent2("trailers");
+                rewardAdsShow2("trailers");
 
             }
         });
@@ -234,7 +247,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                categorySent2("drama");
+                rewardAdsShow2("drama");
 
             }
         });
@@ -242,7 +255,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                categorySent2("mp3");
+                rewardAdsShow2("mp3");
             }
         });
 
@@ -252,14 +265,14 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                categorySent("Tv_channel");
+                rewardAdsShow("Tv_channel");
             }
         });
 
         newspaperBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                categorySent("Newspaper");
+                rewardAdsShow("Newspaper");
 
             }
         });
@@ -267,7 +280,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                categorySent("Radio_station");
+                rewardAdsShow("Radio_station");
 
             }
         });
@@ -275,7 +288,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                categorySent("Sports_update");
+                rewardAdsShow("Sports_update");
 
             }
         });
@@ -283,7 +296,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                categorySent("World_technology");
+                rewardAdsShow("World_technology");
 
             }
         });
@@ -312,6 +325,78 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
+
+    private void rewardAdsShow(final String value){
+
+        if (rewardedAd.isLoaded()) {
+
+            RewardedAdCallback adCallback = new RewardedAdCallback() {
+                @Override
+                public void onRewardedAdOpened() {
+                    // Ad opened.
+                }
+
+                @Override
+                public void onRewardedAdClosed() {
+                    categorySent(value);
+                }
+
+                @Override
+                public void onUserEarnedReward(@NonNull RewardItem reward) {
+                    // User earned reward.
+                }
+
+                @Override
+                public void onRewardedAdFailedToShow(int errorCode) {
+                    // Ad failed to display.
+                }
+            };
+            rewardedAd.show(getActivity(), adCallback);
+            }else {
+
+            categorySent(value);
+
+        }
+
+    }
+
+    private void rewardAdsShow2(final String value){
+
+        if (rewardedAd.isLoaded()) {
+
+            RewardedAdCallback adCallback = new RewardedAdCallback() {
+                @Override
+                public void onRewardedAdOpened() {
+                    // Ad opened.
+                }
+
+                @Override
+                public void onRewardedAdClosed() {
+                    categorySent2(value);
+                }
+
+                @Override
+                public void onUserEarnedReward(@NonNull RewardItem reward) {
+                    // User earned reward.
+                }
+
+                @Override
+                public void onRewardedAdFailedToShow(int errorCode) {
+                    // Ad failed to display.
+                }
+            };
+            rewardedAd.show(getActivity(), adCallback);
+             }else {
+
+            categorySent2(value);
+
+        }
+
+
+
+
+
+    }
 
     private void categorySent(String value){
 
@@ -479,7 +564,7 @@ public class HomeFragment extends Fragment {
             protected Map<String, String> getParams() throws AuthFailureError {
 
                 Map<String, String> Params = new HashMap<>();
-                Params.put("category", "Drama");
+                Params.put("category", "BanglaDrama");
 
                 return Params;
             }
@@ -553,7 +638,7 @@ public class HomeFragment extends Fragment {
             protected Map<String, String> getParams() throws AuthFailureError {
 
                 Map<String, String> Params = new HashMap<>();
-                Params.put("category", "Movie_trailers");
+                Params.put("category", "HindiMovieTrailers");
 
                 return Params;
             }

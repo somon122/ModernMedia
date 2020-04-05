@@ -9,6 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.facebook.ads.AbstractAdListener;
+import com.facebook.ads.Ad;
+import com.facebook.ads.AdError;
+import com.facebook.ads.AudienceNetworkAds;
+import com.facebook.ads.InterstitialAd;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.squareup.picasso.Picasso;
 import com.world_tech_points.modern_media.R;
@@ -18,9 +24,9 @@ import java.util.List;
 
 public class DramaAdapter  extends RecyclerView.Adapter<DramaAdapter.ViewHolder>{
 
-    DramaClass dramaClass;
-    Context context;
-    List<DramaClass> drama_List;
+    private DramaClass dramaClass;
+    private Context context;
+    private List<DramaClass> drama_List;
 
     public DramaAdapter(Context context, List<DramaClass> drama_List) {
         this.context = context;
@@ -31,6 +37,7 @@ public class DramaAdapter  extends RecyclerView.Adapter<DramaAdapter.ViewHolder>
     @Override
     public DramaAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.mp3_model_view,parent,false);
+
 
         return new DramaAdapter.ViewHolder(view);
     }
@@ -49,11 +56,10 @@ public class DramaAdapter  extends RecyclerView.Adapter<DramaAdapter.ViewHolder>
             @Override
             public void onClick(View v) {
 
-                dramaClass = drama_List.get(position);
-                Intent intent = new Intent(context, VideoPlayerActivity.class);
-                intent.putExtra("id",dramaClass.getVideo_link());
-                context.startActivity(intent);
-
+                    dramaClass = drama_List.get(position);
+                    Intent intent = new Intent(context, VideoPlayerActivity.class);
+                    intent.putExtra("id",dramaClass.getVideo_link());
+                    context.startActivity(intent);
 
             }
         });

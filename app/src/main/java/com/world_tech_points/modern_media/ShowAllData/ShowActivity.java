@@ -25,6 +25,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.world_tech_points.modern_media.MainActivity;
 import com.world_tech_points.modern_media.R;
 import org.json.JSONArray;
@@ -59,6 +62,7 @@ public class ShowActivity extends AppCompatActivity {
     private String category;
 
     int mCount;
+    private AdView mAdView;
 
 
 
@@ -78,6 +82,13 @@ public class ShowActivity extends AppCompatActivity {
         data_list = new ArrayList<>();
         recyclerView.setLayoutManager(new GridLayoutManager(this,3));
         recyclerView.setHasFixedSize(true);
+
+        MobileAds.initialize(this,
+                "ca-app-pub-3940256099942544~3347511713");
+
+        mAdView = findViewById(R.id.showBannerAdView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null){
@@ -127,6 +138,7 @@ public class ShowActivity extends AppCompatActivity {
 
         }else if (isWifi){
 
+            mCount = 1;
             allDataRetriveMethod(category);
 
 

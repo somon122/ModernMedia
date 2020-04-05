@@ -9,15 +9,13 @@ import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -25,15 +23,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.facebook.ads.AdSize;
+import com.facebook.ads.AdView;
 import com.world_tech_points.modern_media.MainActivity;
 import com.world_tech_points.modern_media.R;
 import com.world_tech_points.modern_media.ShowAllData.ShowDataAdapter;
 import com.world_tech_points.modern_media.ShowAllData.ShowDataClass;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,13 +49,15 @@ public class TrailersFragment extends Fragment {
     private ShowDataClass dataClass;
     private List<ShowDataClass> data_list;
     private TextView dataAlertTV;
+    private int mCount;
 
-    int mCount;
+    private AdView adView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.trailers_movie, container, false);
+
 
 
         dataClass = new ShowDataClass();
@@ -67,6 +67,11 @@ public class TrailersFragment extends Fragment {
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
         recyclerView.setHasFixedSize(true);
 
+
+        adView = new AdView(getContext(), getString(R.string.facebookBannerAd), AdSize.BANNER_HEIGHT_50);
+        LinearLayout adContainer = (LinearLayout) root.findViewById(R.id.trailers_banner_container_id);
+        adContainer.addView(adView);
+        adView.loadAd();
 
 
         ConnectivityManager manager = (ConnectivityManager)getContext().getSystemService(CONNECTIVITY_SERVICE);
@@ -87,10 +92,9 @@ public class TrailersFragment extends Fragment {
                     netSubType == TelephonyManager.NETWORK_TYPE_HSPA) {
 
                 mCount = 1;
-                movieRetriveMethod();
 
-
-            }
+                    movieRetriveMethod();
+                }
             else if (netSubType == TelephonyManager.NETWORK_TYPE_1xRTT ||
                     netSubType == TelephonyManager.NETWORK_TYPE_GPRS ||
                     netSubType == TelephonyManager.NETWORK_TYPE_EDGE){
@@ -100,8 +104,9 @@ public class TrailersFragment extends Fragment {
 
         }else if (isWifi){
 
-            movieRetriveMethod();
+            mCount = 1;
 
+                movieRetriveMethod();
 
         }
         else
@@ -109,9 +114,6 @@ public class TrailersFragment extends Fragment {
             dataConnectionAlert();
 
         }
-
-
-
 
         return root;
     }
@@ -177,7 +179,7 @@ public class TrailersFragment extends Fragment {
             protected Map<String, String> getParams() throws AuthFailureError {
 
                 Map<String, String> Params = new HashMap<>();
-                Params.put("category", "Movie_trailers");
+                Params.put("category", "EnglishMovieTrailers");
 
                 return Params;
             }
