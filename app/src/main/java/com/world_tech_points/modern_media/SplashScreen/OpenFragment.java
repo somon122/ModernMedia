@@ -5,16 +5,13 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.world_tech_points.modern_media.MainActivity;
 import com.world_tech_points.modern_media.R;
 
@@ -23,13 +20,13 @@ import static android.content.Context.CONNECTIVITY_SERVICE;
 public class OpenFragment extends Fragment {
 
 
-    public OpenFragment() {}
+    public OpenFragment() {
+    }
 
 
     private ProgressBar progressBar;
     private int progress;
     TextView refressTV;
-
 
 
     @Override
@@ -41,6 +38,12 @@ public class OpenFragment extends Fragment {
         progressBar = root.findViewById(R.id.progressBar);
         refressTV = root.findViewById(R.id.reload_id);
         refressTV.setVisibility(View.GONE);
+
+        init();
+        return root;
+    }
+
+    private void init() {
 
         if (HaveNetwork()) {
 
@@ -67,8 +70,6 @@ public class OpenFragment extends Fragment {
         });
 
 
-
-        return root;
     }
 
     private void startApp() {

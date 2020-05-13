@@ -27,7 +27,7 @@ public class VideoPlayerActivity extends YouTubeBaseActivity implements YouTubeP
 
     private YouTubePlayerView playerView;
     private String key = "AIzaSyBOzERj-Xnyneb5AHCyGYojRuaKvg7WvVY";
-    private String id = "7lQL3CVfhv8";
+    private String id = "xUR5sJVYv00";
     private int mCount = 0;
 
 
@@ -62,7 +62,44 @@ public class VideoPlayerActivity extends YouTubeBaseActivity implements YouTubeP
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
 
-        ConnectivityManager manager = (ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);
+
+
+
+        if (HaveNetwork()){
+
+            ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+            NetworkInfo network = connectivityManager.getActiveNetworkInfo();
+            int netSubType = network.getSubtype();
+
+            if (netSubType == TelephonyManager.NETWORK_TYPE_1xRTT ||
+                    netSubType == TelephonyManager.NETWORK_TYPE_GPRS ||
+                    netSubType == TelephonyManager.NETWORK_TYPE_EDGE){
+
+                lowMobileDataAlert();
+
+            }else {
+
+
+                if (!b){
+                    youTubePlayer.cueVideo(id);
+                }
+
+            }
+
+
+
+        }else {
+
+            dataConnectionAlert();
+
+        }
+
+
+
+
+
+
+       /* ConnectivityManager manager = (ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);
 
         boolean is3g = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
                 .isConnectedOrConnecting();
@@ -108,6 +145,11 @@ public class VideoPlayerActivity extends YouTubeBaseActivity implements YouTubeP
         {
             dataConnectionAlert();
         }
+
+        */
+
+
+
     }
 
     @Override
@@ -169,7 +211,35 @@ public class VideoPlayerActivity extends YouTubeBaseActivity implements YouTubeP
 
     }
 
+    private boolean HaveNetwork() {
+        boolean have_WiFi = false;
+        boolean have_Mobile = false;
 
+        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo[] networkInfo = connectivityManager.getAllNetworkInfo();
+
+        for (NetworkInfo info : networkInfo){
+
+            if (info.getTypeName().equalsIgnoreCase("WIFI"))
+            {
+                if (info.isConnected())
+                {
+                    have_WiFi = true;
+                }
+            }
+            if (info.getTypeName().equalsIgnoreCase("MOBILE"))
+
+            {
+                if (info.isConnected())
+                {
+                    have_Mobile = true;
+                }
+            }
+
+        }
+        return have_WiFi || have_Mobile;
+
+    }
 
     private void dataConnectionAlert(){
 

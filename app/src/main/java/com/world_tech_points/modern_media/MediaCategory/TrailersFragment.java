@@ -74,6 +74,34 @@ public class TrailersFragment extends Fragment {
         adView.loadAd();
 
 
+        if (HaveNetwork()){
+
+            ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(CONNECTIVITY_SERVICE);
+            NetworkInfo network = connectivityManager.getActiveNetworkInfo();
+            int netSubType = network.getSubtype();
+
+            if (netSubType == TelephonyManager.NETWORK_TYPE_1xRTT ||
+                    netSubType == TelephonyManager.NETWORK_TYPE_GPRS ||
+                    netSubType == TelephonyManager.NETWORK_TYPE_EDGE){
+
+                lowMobileDataAlert();
+
+            }else {
+
+                mCount = 1;
+                movieRetriveMethod();
+
+            }
+
+
+
+        }else {
+
+            dataConnectionAlert();
+
+        }
+
+/*
         ConnectivityManager manager = (ConnectivityManager)getContext().getSystemService(CONNECTIVITY_SERVICE);
 
         boolean is3g = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
@@ -113,7 +141,7 @@ public class TrailersFragment extends Fragment {
         {
             dataConnectionAlert();
 
-        }
+        }*/
 
         return root;
     }
@@ -270,6 +298,40 @@ public class TrailersFragment extends Fragment {
 
 
     }
+
+
+
+    private boolean HaveNetwork() {
+        boolean have_WiFi = false;
+        boolean have_Mobile = false;
+
+        ConnectivityManager connectivityManager = (ConnectivityManager)getActivity().getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo[] networkInfo = connectivityManager.getAllNetworkInfo();
+
+        for (NetworkInfo info : networkInfo){
+
+            if (info.getTypeName().equalsIgnoreCase("WIFI"))
+            {
+                if (info.isConnected())
+                {
+                    have_WiFi = true;
+                }
+            }
+            if (info.getTypeName().equalsIgnoreCase("MOBILE"))
+
+            {
+                if (info.isConnected())
+                {
+                    have_Mobile = true;
+                }
+            }
+
+        }
+        return have_WiFi || have_Mobile;
+
+    }
+
+
 
 
 

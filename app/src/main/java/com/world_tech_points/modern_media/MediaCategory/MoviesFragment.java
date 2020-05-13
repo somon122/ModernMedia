@@ -73,48 +73,30 @@ public class MoviesFragment extends Fragment {
 
 
 
+        if (HaveNetwork()){
 
-        ConnectivityManager manager = (ConnectivityManager)getContext().getSystemService(CONNECTIVITY_SERVICE);
-
-        boolean is3g = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
-                .isConnectedOrConnecting();
-
-        boolean isWifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
-                .isConnectedOrConnecting();
-
-
-        if (is3g) {
             ConnectivityManager connectivityManager = (ConnectivityManager) getContext().getSystemService(CONNECTIVITY_SERVICE);
             NetworkInfo network = connectivityManager.getActiveNetworkInfo();
             int netSubType = network.getSubtype();
-            if(netSubType == TelephonyManager.NETWORK_TYPE_HSPAP ||
-                    netSubType == TelephonyManager.NETWORK_TYPE_HSDPA ||
-                    netSubType == TelephonyManager.NETWORK_TYPE_HSPA) {
+
+            if (netSubType == TelephonyManager.NETWORK_TYPE_1xRTT ||
+                    netSubType == TelephonyManager.NETWORK_TYPE_GPRS ||
+                    netSubType == TelephonyManager.NETWORK_TYPE_EDGE){
+
+                lowMobileDataAlert();
+
+            }else {
 
                 mCount = 1;
                 movieRetriveMethod();
 
             }
-            else if (netSubType == TelephonyManager.NETWORK_TYPE_1xRTT ||
-                    netSubType == TelephonyManager.NETWORK_TYPE_GPRS ||
-                    netSubType == TelephonyManager.NETWORK_TYPE_EDGE){
 
-                lowMobileDataAlert();
-            }
+        }else {
 
-        }else if (isWifi){
-
-            mCount = 1;
-            movieRetriveMethod();
-
-        }
-        else
-        {
             dataConnectionAlert();
 
         }
-
-
 
         return root;
     }
@@ -269,6 +251,39 @@ public class MoviesFragment extends Fragment {
 
 
     }
+
+
+
+    private boolean HaveNetwork() {
+        boolean have_WiFi = false;
+        boolean have_Mobile = false;
+
+        ConnectivityManager connectivityManager = (ConnectivityManager)getActivity().getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo[] networkInfo = connectivityManager.getAllNetworkInfo();
+
+        for (NetworkInfo info : networkInfo){
+
+            if (info.getTypeName().equalsIgnoreCase("WIFI"))
+            {
+                if (info.isConnected())
+                {
+                    have_WiFi = true;
+                }
+            }
+            if (info.getTypeName().equalsIgnoreCase("MOBILE"))
+
+            {
+                if (info.isConnected())
+                {
+                    have_Mobile = true;
+                }
+            }
+
+        }
+        return have_WiFi || have_Mobile;
+
+    }
+
 
 
 

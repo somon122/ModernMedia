@@ -40,7 +40,7 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
         setTitle("Media Category");
 
         MobileAds.initialize(this,
-                "ca-app-pub-3940256099942544~3347511713");
+                getString(R.string.admobAppId));
         mAdView = findViewById(R.id.categoryBannerAdView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
